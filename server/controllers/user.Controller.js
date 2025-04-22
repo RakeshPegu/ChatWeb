@@ -15,11 +15,10 @@ export const getUser = async(req,res)=>{
     }
 }
 export const update = async(req, res)=>{
-    const userInfo = req.body
+    const {username, password} = req.body
     const userId = req.params.id
     try {
-        console.log(Number(userId))
-        console.log(req.session.userId)
+      
         if(!req.session.userId){
             return res.status(403).json({message:'authentication required'})
 
@@ -29,9 +28,9 @@ export const update = async(req, res)=>{
             return res.status(401).json({message:"Not authorized"})
         }
         const [users] = await db.query("SELECT * FROM users WHERE id= ?",[userId])
-        console.log(users)
+        
         const user = users[0]
-        const updatedUser = await db.query("UPDATE users SET (?,?, ?) WHERE ()")
+        
         
     } catch (error) {
         res.status(500).json({message:'Something went wrong'})

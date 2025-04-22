@@ -4,5 +4,4 @@ const router = express.Router()
 router.post('/:id', createChat)
 router.get('/', getChats)
 router.get('/:id', getChat)
-
 export default router;
