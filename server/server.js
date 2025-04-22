@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import authRoute from './routes/auth.route.js'
 import userRoute from './routes/user.route.js'
 import chatRoute from './routes/chat.route.js'
@@ -7,9 +8,10 @@ import messageRoute from './routes/message.route.js'
 import session from 'express-session';
 const app = express()
 const port = process.env.PORT || 3300;
+
 app.use(express.json())
 app.use(session({
-    secret:"keyboard key",
+    secret:process.env.SECRET_KEY,
     resave:false,
     saveUninitialized:false,
     cookie: {
@@ -18,6 +20,11 @@ app.use(session({
         maxAge:1000*60*60*24*7,
     }
 }))
+
+app.use(cors({origin:process.env.CLIENT_URL, Credential:true}))
+app.get('/api', async(req, res)=>{
+    res.status(200).json({message:'This is from the backend '})
+})
 app.use('/api/auth', authRoute)
 app.use('/api/user', userRoute)
 app.use('/api/chat', chatRoute)
