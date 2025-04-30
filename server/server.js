@@ -20,15 +20,15 @@ app.use(session({
         maxAge:1000*60*60*24*7,
     }
 }))
-
-app.use(cors({origin:process.env.CLIENT_URL, Credential:true}))
+console.log(process.env.CLIENT_URL)
+app.use(cors({origin:process.env.CLIENT_URL, credentials:true}))
 app.get('/api', async(req, res)=>{
     res.status(200).json({message:'This is from the backend '})
 })
 app.use('/api/auth', authRoute)
 app.use('/api/user', userRoute)
-app.use('/api/chat', chatRoute)
-app.use('/api/profile', profileRoute)
+app.use('/api/chats', chatRoute)
+app.use('/api/profiles', profileRoute)
 app.use('/api/message',messageRoute )
 app.listen(port, ()=>{
     console.log(`The server is listening on port ${port}`)

@@ -2,18 +2,31 @@ import { db } from "../db.js"
 
 
 export const createChat = async(req, res)=>{
-    const receiverId = req.params.id;
+    const {receiverId} =req.body ;
     const senderId = req.session.userId;
     try { 
-        console.log(req.session.userId)
-        console.log(receiverId)
+        console.log( senderId)
+        console.log (typeof receiverId)
         // create a chat
+      if(!senderId) {
+        return res.status(401).json({success:false, message:'Authentication is required'})
+
+      }
+      const [existingChat] = await db.query('SELECT cp1.conversationId FROM chat_participants AS cp1 INNER JOIN chat_participants AS cp2 WHERE cp1.userId =? AND cp2.userId=?',[receiverId, senderId])
+      console.log(existingChat)
+
+      if(existingChat.length>0){
        
+        return res.status(400).json({message:"chat already exist"})
+        
+        
+      }
+      
       const [result] =await db.query('INSERT INTO chats(isGroup) VALUES (FALSE)')
-      console.log(result)
       const conversationId = result.insertId;
-      console.log(conversationId)
+      console.log('done')
       const [chat] = await db.query('INSERT INTO chat_participants (conversationId, userId) VALUES (?,?),(?,?)', [conversationId,senderId,conversationId,receiverId])
+      console.log('done2')
       res.status(200).json({message:'Chat has been created successfully'})
 
       
@@ -46,7 +59,8 @@ export const getChat = async(req, res)=>{
     const receiverId = req.session.userId
     const chatId = req.params.id
     try {
-        
+        console.log(receiverId)  
+          
         console.log('this is the chatId:',chatId)
         if(!receiverId){
             return res.status(401).json({message:'Authentication is required'})
@@ -73,9 +87,12 @@ export const getChat = async(req, res)=>{
 export const createMessage = async(req, res)=>{
     const chatId = req.params.id;
     const senderId = req.session.userId;
-    const {body} = req.body
+    const {message} = req.body
     try {
-        console.log(body)
+        
+        console.log(senderId)
+
+        
         if(!senderId){
             return res.status(401).json({message:'Authentication is required'})
         }
@@ -83,7 +100,7 @@ export const createMessage = async(req, res)=>{
         if(!existingChat){
             return res.status(200).json({message:'Chat not found'})
         }
-        const [result] = await db.query('INSERT INTO messages(body,isRead, conversationId, senderId) VALUES (?,?,?,?)', [body,0,chatId,senderId])
+        const [result] = await db.query('INSERT INTO messages(body,isRead, conversationId, senderId) VALUES (?,?,?,?)', [message,0,chatId,senderId])
         console.log(result.insertId)
         const [mesages] = await db.query('SELECT * FROM messages WHERE messageId =?',result.insertId)
         res.status(200).json(mesages)
@@ -94,20 +111,28 @@ export const createMessage = async(req, res)=>{
     }
 }
 export const readMessage = async(req, res)=>{
+    
     const readerId = req.session.userId;
     const chatId = req.params.id;
     try {
+        console.log(chatId)
+        console.log(readerId)
         if(!readerId){
             return res.status(401).json({message:'Authentication is required'})
         }
-        const [result] = await db.query('SELECT * messages WHERE conversationId =?', [chatId])
+        console.log('done this process')
+        const [result] = await db.query('SELECT * FROM messages WHERE conversationId=? AND senderId=?', [chatId, readerId])
+        console.log(result)
         if(result.length===0){
             return res.status(404).json({message:'Not found'})
         }
-        await db.query('INSERT INTO messages(isRead) VALUES(?)', [1])
+        console.log('result step is done')
+        
+        await db.query('UPDATE messages SET isRead=? WHERE senderId AND conversationId ', [1,readerId,chatId])
         console.log(result)
         res.status(200).json(result)
     } catch (error) {
+        console.log(error)
         res.status(500).json({message:'Something went wrong'})
         
     }
