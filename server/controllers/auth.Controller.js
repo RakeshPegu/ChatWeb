@@ -16,7 +16,7 @@ export const register = async(req, res)=>{
             return res.status(400).json({message:"The email address already exist"})
         }      
         const [verifyOtp] = await db.query('SELECT * FROM user_otps WHERE email=? AND expiresAt>NOW() ORDER BY createAt DESC LIMIT 1', [email])
-        
+          
         if(verifyOtp.length===0 || verifyOtp[0].otp !== otp){
             return res.status(403).json({
                 success:false,
@@ -53,7 +53,10 @@ export const login = async(req, res)=>{
            return res.status(404).json({message:'Not found'})
         }
         const user = users[0]
-              
+       const validPassword = await bcrypt.compare(password, user.password) 
+       if(!validPassword){
+        return res.status(403).json({message:'Wrong password'})
+       }
         req.session.userId = user.userId,
         
         req.session.username = user.username;

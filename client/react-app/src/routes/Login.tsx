@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { apiRequest } from "../lib/apiRequst";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../components/context";
+import { AuthContext } from "../context/context";
 
 function Login(){
     const navigate = useNavigate()
@@ -24,9 +24,10 @@ function Login(){
                 email,
                 password
             })
+           
             if(res.status===200 || res.statusText==='OK'){
-                updateUser(res.data)
-                navigate('/Profiles')
+                updateUser(res.data.user)
+                navigate('/chats')
             }
             
         } catch (error:any) {
@@ -41,14 +42,17 @@ function Login(){
             
     }
     return (
+<div className="bg-blue-300 h-[100vh] flex flex-col gap-3">
+    <h1 className="text-2xl text-center pt-4"> Login here</h1>
       
-    <div>
-        <form onSubmit={handleSubmit}>
-            <input type="email" placeholder="enter your email" name='email'/>
-            <input type='password' placeholder="Enter your password" name="password"/>
-            <button disabled={isLoading} type="submit"> Login</button>
+    <div className="bg-cyan-950 h-[100%] ">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5 pt-10 items-center ">
+            <input type="email" placeholder="enter your email" name='email' className="bg-blue-50  h-[40px] text-center w-[95%] focus:outline-none rounded-xl"/>
+            <input type='password' placeholder="Enter your password" name="password" className="bg-blue-50  text-center w-[95%]  h-[40px] focus:outline-none rounded-xl"/>
+            <button disabled={isLoading} type="submit" className="bg-blue-600 h-[40px]  rounded-2xl cursor-pointer w-[100px]"> Login</button>
         </form>
-        <h1>{error&&<p>{error}</p>}</h1>
+        <h1 className=" text-center mt-4" >{error&&<p className=" text-xl font-bold text-red-600">{error}</p>}</h1>
+    </div>
     </div>
     );
 }

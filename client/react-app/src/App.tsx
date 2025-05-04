@@ -3,12 +3,14 @@ import Register from './routes/register';
 import FillOtp from './routes/Fill_otp';
 import Home from './routes/Home';
 import Login from './routes/Login';
-import Layout from './routes/Layout/Layout';
+
 import { ChatLoaders, messageLoader, ProfilesLoader, singleProfileLoader } from './lib/loader';
 import SinglePage from './components/SingleProfile/SinglePage';
 import UserProfile from './routes/UserProfile/UserProfiles';
 import MessagePage from './routes/MessagePage/SingleChat';
 import Chats from './routes/chats/chats';
+import { ChatLayout, Layout, MessageLayout } from './routes/Layout/Layout';
+import ProfilePage from './routes/ProfilePage/ProfilePage';
 const routes = createBrowserRouter([
   {
     path:'/',
@@ -32,6 +34,7 @@ const routes = createBrowserRouter([
     path:"/",
     element:<Layout/>,
     children: [
+     
       {
         path:"profiles",
         element:<UserProfile/>,
@@ -44,18 +47,39 @@ const routes = createBrowserRouter([
        
          
       },
+     
+     
+    
+    ]
+  },
+  {
+    path:'/',
+    element:<ChatLayout/>,
+        children:[
       {
         path:"chats",
         element:<Chats/>,
         loader:ChatLoaders
         
       },
+      
+      
+    ]
+  },
+  {
+    path:"/",
+    element:<MessageLayout/>,
+    children: [
       {
-        path:"/chats/:chatId",
-        element:<MessagePage/>,
-        loader:messageLoader
+        path:'profile',
+        element:<ProfilePage/>
       },
-    
+      {
+          path:"/chats/:chatId",
+          element:<MessagePage/>,
+          loader:messageLoader
+        
+      }
     ]
   }
 ])

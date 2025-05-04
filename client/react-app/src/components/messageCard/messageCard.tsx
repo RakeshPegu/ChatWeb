@@ -1,8 +1,8 @@
 function MessageCard({item}:any){
-    console.log('this messageCard',item)
-    return(
-        <div className="bg-cyan-800 text-white flex items-center justify-center h-[20px]">
-            {item.body}
+        return(
+        <div className="bg-blue-50 w-[70%] rounded-2xl flex flex-col justify-center items-center pt-2 pb-2  ">
+            {item.body} 
+            
         </div>
     );
 }

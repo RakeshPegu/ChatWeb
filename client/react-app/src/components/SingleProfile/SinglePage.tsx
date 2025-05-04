@@ -1,7 +1,7 @@
 import {  useLoaderData, useNavigate } from "react-router-dom";
 import { apiRequest } from "../../lib/apiRequst";
 import { useContext } from "react";
-import { AuthContext } from "../context";
+import { AuthContext } from "../../context/context";
 
  function SinglePage(){
   const authContext = useContext(AuthContext)
