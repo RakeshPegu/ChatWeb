@@ -1,17 +1,9 @@
 {
-  "dependencies": {
-    "otp-generator": "^4.0.1"
-  },
   "name": "chat101",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
-    "install-server": "cd server && npm install",
-    "start-server": "cd server && node server.js",
-    "install-client": "cd client/react-app && npm install ",
-    "build-client":"cd client/react-app && npm run build ",
-    "start-client": "cd client/react-app && npm run start"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
