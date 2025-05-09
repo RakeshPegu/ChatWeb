@@ -2,6 +2,7 @@ import {  useLoaderData, useNavigate } from "react-router-dom";
 import { apiRequest } from "../../lib/apiRequst";
 import { useState } from "react";
 import  Alert from "@mui/material/Alert"
+import { Stack } from "@mui/material";
 
 
  function SinglePage(){
@@ -10,8 +11,7 @@ import  Alert from "@mui/material/Alert"
   const userInfo = useLoaderData()
   const navigate = useNavigate()
   const receiverId =userInfo[0].userId 
-  console.log('this is reciever id', receiverId)
-  const handleClick = async()=>{
+   const handleClick = async()=>{
     try {
     setError('')       
      const res =  await apiRequest.post('/chats',{receiverId})
@@ -24,7 +24,7 @@ import  Alert from "@mui/material/Alert"
     } catch (error:any) {
       console.log(error)
       setVisible(true)
-      setError(error.response?.message.data || 'Something went wrong')
+      setError(error.response?.data.message || 'Something went wrong')
       
     }
  
@@ -33,7 +33,10 @@ import  Alert from "@mui/material/Alert"
      return(
      
     <div className="bg-blue-100 h-[100vh] flex flex-col  items-center">
-           {error&&visible&&  <Alert severity="error" variant="filled" onClose={()=> {setVisible(false)}}>{error}</Alert> }       
+      <Stack sx={{width:"100%", borderRadius:"10px"}} className="relative top-5">
+      {error&&visible&&  <Alert severity="error" variant="filled" onClose={()=> {setVisible(false)}}>{error}</Alert> }     
+      </Stack>
+           
        
         <div className="bg-gray-700 relative top-[30px] rounded-2xl flex flex-col gap-8 pb-10 w-[98%]">
           <div className="flex justify-center items-center pt-[30px]">

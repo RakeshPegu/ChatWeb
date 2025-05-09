@@ -2,8 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 function ChatCard({item}:any){
     const navigate = useNavigate()
-    console.log(item)
-    const handleClick = ()=>{
+       const handleClick = ()=>{
         navigate(`/chats/${item.chatId}`, {
             state:{
                 chatId:item.chatId
