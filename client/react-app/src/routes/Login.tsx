@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { apiRequest } from "../lib/apiRequst";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/context";
 
 function Login(){
@@ -42,16 +42,18 @@ function Login(){
             
     }
     return (
-<div className="bg-blue-300 h-[100vh] flex flex-col gap-3">
-    <h1 className="text-2xl text-center pt-4"> Login here</h1>
-      
-    <div className="bg-cyan-950 h-[100%] ">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5 pt-10 items-center ">
+<div className=" bg-cyan-950 h-[100vh] flex flex-col items-center relative ">
+<div className="bg-blue-300 h-[400px] w-[400px] absolute top-[100px] rounded-xl  ">
+    <h1 className="text-2xl text-center pt-4"> Login here</h1>    
+    
+        <form onSubmit={handleSubmit} className="flex flex-col gap-10 pt-10 items-center ">
             <input type="email" placeholder="enter your email" name='email' className="bg-blue-50  h-[40px] text-center w-[95%] focus:outline-none rounded-xl"/>
             <input type='password' placeholder="Enter your password" name="password" className="bg-blue-50  text-center w-[95%]  h-[40px] focus:outline-none rounded-xl"/>
-            <button disabled={isLoading} type="submit" className="bg-blue-600 h-[40px]  rounded-2xl cursor-pointer w-[100px]"> Login</button>
+            <button disabled={isLoading} type="submit" className="bg-blue-600 mt-[15px] h-[40px]  rounded-2xl cursor-pointer w-[100px]"> Login</button>
+            <h1 className=" text-center " >{error&&<p className=" text-xl font-bold text-red-600">{error}</p>}</h1>
         </form>
-        <h1 className=" text-center mt-4" >{error&&<p className=" text-xl font-bold text-red-600">{error}</p>}</h1>
+        <h2 className="text-center text-lg"> Don't have an account ? <Link className="text-2xl text-blue-800" to={'/register'}>sign up</Link> </h2>
+       
     </div>
     </div>
     );

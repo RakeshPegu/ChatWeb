@@ -18,12 +18,12 @@ function ProfilePage(){
 
     }
     return(
-        <div className="bg-blue-100 h-[100vh] flex flex-col gap-9">
+        <div className="bg-blue-100 h-[100vh] flex flex-col gap-9 items-center">
             <h1 className="text-4xl pt-4 text-center w-[100%]">Dash board</h1>
             <div className="flex items-center justify-center">
                 <img src="profile.png" alt="profile" className="w-[40%] rounded-full"/>
             </div>
-            <div className="bg-cyan-800  pt-5 pb-5 ">
+            <div className="bg-cyan-800  pt-5 pb-5 w-[95%] rounded-3xl ">
 
             <div className="flex flex-col gap-4 ml-6 ">
                 <h2 className="text-2xl text-white"> Username: {currentUser?.username}</h2>
@@ -33,7 +33,7 @@ function ProfilePage(){
             </div>              
 
             </div>
-            <div className="flex gap-10 justify-evenly">
+            <div className="flex gap-[200px]">
               <button onClick={handleClick} className="bg-red-600 text-white h-[50px] w-[100px] rounded-2xl cursor-pointer">
                 Logout
               </button>
